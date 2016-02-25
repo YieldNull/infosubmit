@@ -1,0 +1,56 @@
+.announce-area {
+	margin-top: 10px;
+}
+
+label.select-table {
+	color: #666666;
+}
+
+.table-detail {
+	margin-top: 10px;
+	text-align: left;
+	color: #666666;
+}
+
+label.col-sm-2 {
+	width: 10%;
+}
+
+textarea {
+	resize: none;
+}
+
+.form-group {
+	margin-bottom: 15px;
+}
+
+button.btn-block {
+	height: 36px;
+	padding: 5px 16px;
+	width: 15%;
+	font-size: 14px;
+	padding: 5px 2px;
+}
+
+select.form-control {
+	width: 96%;
+}
+
+#table input.form-control {
+	width: 96%;
+	float: left;
+	margin-right: 10px;
+}
+
+#add-thead {
+	float: left;
+	margin-right: 10px;
+}
+
+.modal-footer button.btn-default {
+	margin-bottom: 0px;
+}
+
+.modal-body input.form-control {
+	width: 80%;
+}

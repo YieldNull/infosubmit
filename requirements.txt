@@ -1,0 +1,4 @@
+flask
+peewee
+openpyxl
+MySQL-python

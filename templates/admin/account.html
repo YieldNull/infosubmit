@@ -1,0 +1,70 @@
+{% extends "admin/base.html" %}
+<!--  -->
+
+{% block title %}账号管理{% endblock %}
+
+<!--  -->
+{% block body %}
+<h1 class="page-header">账号管理</h1>
+<table class="table table-bordered">
+	<tr class="warning">
+		<th>账号分类</th>
+		<th>账号</th>
+		<th>密码</th>
+		<th>更改</th>
+	</tr>
+	<tr>
+		<td>{{'管理员'}}</td>
+		<td>
+			<div class="form-group">
+				<input type="text" class="form-control" id="admin-id" value="{{admin.userId}}">
+			</div>
+		</td>
+		<td>
+			<div class="form-group">
+				<input type="text" class="form-control" id="admin-passwd" value="{{admin.password}}">
+			</div>
+		</td>
+		<td>
+			<button class="btn btn-success change" onclick="submitForm('admin')">确认更改</button>
+		</td>
+	</tr>
+	<tr>
+		<td>{{'用户'}}</td>
+		<td>
+			<div class="form-group">
+				<input type="text" class="form-control" id="user-id" value="{{user.userId}}">
+			</div>
+		</td>
+		<td>
+			<div class="form-group">
+				<input type="text" class="form-control" id="user-passwd" value="{{user.password}}">
+			</div>
+		</td>
+		<td>
+			<button class="btn btn-success change" onclick="submitForm('user')">确认更改</button>
+		</td>
+	</tr>
+</table>
+<form id="myForm" action="{{url_for('admin_account_update')}}" method="POST" hidden="hidden">
+	<input type="text" name="type"  id="type">
+	<input type="text" name="userId" id="userId">
+	<input type="text" name="userPasswd" id="userPasswd">
+</form>
+{%endblock%}
+
+{% block footer %}
+<script type="text/javascript">
+function submitForm(type){
+	document.getElementById("type").value=type;
+	if(type=="admin"){
+		document.getElementById("userId").value=document.getElementById('admin-id').value;
+		document.getElementById("userPasswd").value=document.getElementById('admin-passwd').value;
+	}else{
+		document.getElementById("userId").value=document.getElementById('user-id').value;
+		document.getElementById("userPasswd").value=document.getElementById('user-passwd').value;
+	}
+	document.getElementById("myForm").submit();
+}
+</script>
+{%endblock%}

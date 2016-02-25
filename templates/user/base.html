@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+<!--  -->
+
+{% block topnav %}
+<nav class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+				aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" id="home" href="{{url_for('user_home')}}">江陵县信息提交平台</a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="{{url_for('user_home')}}">主页</a></li>
+				<li><a href="{{url_for('user_announce',page=1)}}">公告</a></li>
+				<li><a href="{{url_for('user_tables',page=1)}}">表格</a></li>
+				<li><a href="{{url_for('logout')}}">登出</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+{% endblock %} 
+
+{% block sidebar %}
+
+<ul class="nav nav-sidebar">
+	<li class="active"><a href="{{url_for('user_tables',page=1)}}">最近表格<span class="sr-only">(current)</span></a>
+	</li>
+	{% for latest_sheet in latestSheet%}
+		<li><a href="{{url_for('user_sheet',sheetNo=latest_sheet.sheetNo)}}">{{latest_sheet.sheetName}}</a></li>
+	{% endfor %}
+</ul>
+<ul class="nav nav-sidebar">
+	<li class="active"><a href="{{url_for('user_tables',page=1)}}">所有表格&nbsp;&nbsp;<span
+			class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span
+			class="sr-only">(current)</span></a></li>
+</ul>
+<ul class="nav nav-sidebar">
+	<li class="active"><a href="{{url_for('user_announce',page=1)}}">所有公告&nbsp;&nbsp;<span
+			class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span
+			class="sr-only">(current)</span></a></li>
+</ul>
+{% endblock %}
+

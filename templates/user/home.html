@@ -1,0 +1,27 @@
+{% extends "user/base.html" %}
+
+
+<!--  -->
+{% block title %}江陵县信息提交系统{% endblock %}
+
+
+<!--  -->
+{% block body %}
+<div class="history-announce">
+	<a href="{{url_for('user_announce',page=1)}}"><button type="button"
+			class="btn btn-danger ">历史公告</button></a>
+</div>
+<h1 class="page-header">管理员公告</h1>
+	{% for announce in announces %} 
+		<div class="bs-callout bs-callout-info">
+			<h3>{{announce.title}}</h3>
+			<div class="announce">{{announce.content}}</div>
+			{% if announce.sheetNo %}
+				<a href="{{url_for('user_sheet',sheetNo=announce.sheetNo.sheetNo)}}">
+					<button type="button" class="btn btn-info">填报表格
+					</button>
+				</a>
+			{% endif %}
+		</div>
+	{% endfor %}
+{% endblock %}

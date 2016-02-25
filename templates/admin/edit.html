@@ -1,0 +1,192 @@
+{# 
+	If there exists a sheet, show heads.
+		
+	The heads can't be updated and won't be sent to server 
+	if the sheet has data(someone has submit data)
+	
+	use hidden input field `updateSheet`('True' if update sheet)
+	`announceNo`(identity the announce),which are sent to server certainly
+	
+	recevie data form view function:
+		SelectQuery Object: `announce` `sheet`  `heads`
+		boolean: `hasData`
+	
+headsst data:
+		`announceNo` `announceTitle` `announceContent` `updateSheet`
+		
+		 if updateSheet=='True':
+		`sheetName` `superCate` and `tableHeads%d` % headNo
+#}
+
+
+{% extends "admin/base.html" %}
+<!--  -->
+{% block title %}编辑公告{% endblock %}
+
+<!--  -->
+{% block head %} {{ super() }}
+<link href="{{url_for('static',filename='css/admin-new.css')}}"
+	rel="stylesheet">
+<style type="text/css">
+.announce-area{
+	margin-bottom:10px;
+}
+.form-group input.form-control{
+	width:96%;
+}
+.modal-footer button.btn-default {
+  margin-bottom: 10px;
+}
+</style>
+{% endblock %}
+
+<!--  -->
+{% block body %}
+<!--  -->
+
+<div class="history-announce">
+	<button type="button" class="btn btn-danger" data-toggle="modal"
+		data-target="#myModal">
+	{% if announce.sheetNo%}
+		删除公告及表格
+	{% else %}
+		删除公告
+	{% endif %}
+	</button>
+</div>
+
+<h1 class="page-header">编辑公告</h1>
+<form id="theForm" class="form-horizontal" action="{{url_for('admin_announce_update')}}" method="POST">
+	<input id="announceTitle" name="announceTitle" type="text" 
+		class="form-control" value="{{announce.title}}">
+	
+	<textarea id="announceContent" name="announceContent"
+		class="form-control announce-area" rows="4">{{announce.content}}</textarea>
+	
+	{% if announce.sheetNo %}
+		{% set disabled='disabled' if hasData else None%}
+		<div class="form-group">
+			<label class="col-sm-2 col-xs-2 control-label">表格名</label>
+			<div class="col-sm-10 col-xs-10">
+				<input type="text" name="sheetName"
+					id="sheetName" class="form-control" value="{{sheet.sheetName}}" {{disabled}}>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 col-xs-2 control-label">填表单位类别</label>
+			{% if hasData %}
+				<div class="col-sm-10 col-xs-10">
+					<input type="text" name="superCate" id="superCate"
+						class="form-control" value="{{sheet.superCate}}" {{disabled}}>
+				</div>
+			{% else %}
+				<div class="col-sm-10 col-xs-10">
+					<select name="superCate" id="superCate" class="form-control">
+						{%if sheet.superCate=='事业单位'%}
+							<option>事业单位</option>
+							<option>行政单位</option>
+						{%else%}
+							<option>行政单位</option>
+							<option>事业单位</option>
+						{%endif%}
+					</select>
+				</div>
+			{% endif %}
+		</div>
+		
+		{% for item in heads %}
+			<div class="form-group">
+				<label class="col-sm-2 col-xs-2 control-label">表头{{item.headNo}}</label>
+				<div class="col-sm-10 col-xs-10">
+					<input type="text" id="{{item.headNo}}" name="{{item.headNo}}" 
+					 	value="{{item.head}}" class="form-control" 
+					 	{{disabled if item.head not in ['单位名称','单位分类'] else disable or 'readonly'}}
+					>
+				</div>
+			</div>
+		{% endfor %}
+		
+		<div id="more-thead"></div>
+	
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-rsm-10">
+				<button type="submit" class="btn btn-danger">
+					完成修改
+				</button>
+				{% if not hasData%}
+					<div id="add-thead">
+						<button type="button" class="btn btn-success" id="add-thead"
+							onclick="addThead()">添加表头</button>
+					</div>
+				{%endif%}
+			</div>
+		</div>
+	{% else %}
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-rsm-10">
+				<button type="submit" class="btn btn-danger">完成修改</button>
+			</div>
+		</div>
+	{% endif %}
+	
+	<div hidden="hidden">
+		<input type="text" name="announceNo" value="{{announce.announceNo}}">
+		{% if announce.sheetNo and not hasData%}
+			<input type="text" id="updateSheet" name="updateSheet" value="Ture" >
+		{% else %}
+			<input type="text" id="updateSheet" name="updateSheet" value="False" >
+		{% endif%}
+	</div>
+</form>
+{% block modal %}
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">确认删除公告</h4>
+			</div>
+			<div class="modal-body">
+			<center>
+				<h3>将会删除公告以及与之关联的表格数据，
+					<br/>您确认要继续吗？
+				</h3>
+			</center>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<a href="{{url_for('admin_announce_delete',announceNo=announce.announceNo)}}">
+					<button type="button" class="btn btn-primary" >确认</button>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+<!--  -->
+{% endblock %}
+
+<!--  -->
+{% block footer%}
+<script type="text/javascript">
+{% if heads %}
+	// if heads not null
+	var index = {{heads.count()+1}};
+{%endif%}
+
+//add more head
+function addThead() {
+	var more = document.getElementById("more-thead");
+	var addHtml = "<div class='form-group'>"
+			+ "<label class='col-sm-2 col-xs-2 control-label'>表头" + index++
+			+ "</label>" + "<div class='col-sm-10 col-xs-10'>"
+			+ "<input type='text' id='"
+			+ (index - 1) + "' name='" + (index - 1)
+			+ "' class='form-control'>" + "</div></div>";
+	more.innerHTML = addHtml + "<div id='more-thead'></div>";
+	more.removeAttribute('id');
+}
+</script>
+{% endblock %}
+

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>江陵县信息提交平台</title>
+<!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
+<link href="{{url_for('static',filename='css/bootstrap.min.css')}}" rel="stylesheet">
+<!--[if lt IE 6]>
+      <script type="text/javascript">
+      	alert("抱歉，由于您的浏览器版本过低，若页面不能正常显示\n\n"+
+      			"请换用搜狗、猎豹、360急速等基于chrome内核的浏览器\n\n"+
+      			"或者使用IE(10、11) firefox(火狐)、chrome(谷歌)，opera(欧朋)浏览器");
+      </script>
+    <![endif]-->
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+      <script type="text/javascript">
+      	alert("抱歉，由于您的浏览器版本过低，若页面不能正常显示\n\n"+
+      			"请换用搜狗、猎豹、360急速等基于chrome内核的浏览器\n\n"+
+      			"或者使用firefox(火狐)、chrome(谷歌)，opera(欧朋)浏览器");
+      </script>
+    <![endif]-->
+<!-- Custom CSS -->
+<link href="{{url_for('static',filename='css/login.css')}}"
+	rel='stylesheet' type='text/css' />
+</head>
+
+<body>
+	<div class="main">
+		{% for category, message in get_flashed_messages(with_categories=true) %}
+			<div class="alert alert-{{ category }} alert-dismissable">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-hidden="true">&times;</button>
+				<p>{{ message }}</p>
+			</div>
+		{% endfor %}
+		<div class="user">
+			<img src="{{url_for('static',filename='img/user.png')}}"
+				alt="user.png">
+		</div>
+		<div class="login">
+			<div class="inset">
+				<!-----start-main---->
+				<center>
+					<h3>江陵县信息提交平台</h3>
+				</center>
+				<form action="{{url_for('login')}}" method="POST">
+					<div>
+						<span><label>用户名</label></span> <span><input type="text"
+							class="textbox" name="uid" id="active"></span>
+					</div>
+					<div>
+						<span><label>密&nbsp;&nbsp;码</label></span> <span><input
+							type="password" name="passwd" class="password"></span>
+					</div>
+					<div class="sign">
+						<div class="submit">
+							<input type="submit" value="登录">
+						</div>
+						<span class="forget-pass"> <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal">忘记密码?</a>
+						</span>
+						<div class="clear"></div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-----//end-main---->
+	</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel" >忘记密码</h4>
+			</div>
+			<div class="modal-body">
+				<h3>请与管理员联系</h3>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">确认</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<!-----start-copyright---->
+	<div class="copy-right">
+		<p>
+			Powered by <a href="http://finalize.sinaapp.com">finalize</a>
+		</p>
+	</div>
+	<!-----//end-copyright---->
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="{{ url_for('static',filename='js/jquery.js') }}"></script>
+
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script type="text/javascript"
+		src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+</body>
+</html>

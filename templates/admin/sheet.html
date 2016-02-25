@@ -1,0 +1,65 @@
+{% extends "admin/base.html" %}
+<!--  -->
+{% block title %}表格详情{% endblock %}
+
+<!--  -->
+{% block head %} {{ super() }}
+<style type="text/css">
+table {
+	width: 100%;
+}
+
+.name {
+	width: 30%;
+}
+td{
+	color:#777;
+}
+th.branchName{
+	
+}
+</style>
+{% endblock %}
+
+
+<!--  -->
+{% block body %}
+<div class="history-announce new-announce">
+	<a href="{{url_for('admin_sheet_print',sheetNo=sheet.sheetNo)}}"><button type="button"
+			class="btn btn-danger">生成excel</button></a>
+</div>
+<div class="history-announce new-announce">
+	{% if sheet.closed==False %}
+		<a href="{{url_for('admin_sheet_close',sheetNo=sheet.sheetNo)}}">
+			<button type="button" class="btn btn-danger">
+				截止填报
+			</button>
+		</a>
+	{% else %}
+		<a href="{{url_for('admin_sheet_open',sheetNo=sheet.sheetNo)}}">
+			<button type="button" class="btn btn-danger">
+				允许填报
+			</button>
+		</a>
+	{% endif %}
+	
+</div>
+<h1 class="page-header">表格详情<small>&nbsp;&nbsp;&nbsp;{{sheet.sheetName}}</small></h1>
+<table class="table table-bordered table-hover">
+	<tr>
+	{% for head in heads %}
+		<th class="{{'branchName' if head.head=='单位名称' else ''}}">{{head.head}}</th>
+	{% endfor %}
+	</tr>
+	
+	{% for data in datas %}
+	<tr>
+		{% for i in range(data|length()-1) %}
+			<td>{{data[i]}}</td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+	
+</table>
+{% endblock %}
+

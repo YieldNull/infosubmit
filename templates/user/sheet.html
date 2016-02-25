@@ -1,0 +1,83 @@
+{% extends "user/base.html" %}
+<!--  -->
+{% block title %}表格详情{% endblock %}
+
+<!--  -->
+{% block head %} {{ super() }}
+<style type="text/css">
+table {
+	width: 100%;
+}
+
+.name {
+	width: 30%;
+}
+td{
+	color:#777;
+}
+button.change {
+	font-size: 12px;
+	padding: 2px;
+	margin-bottom: 0;
+	margin-top: 0;
+}
+tr.highlight {
+	background-color: #EE6A50;
+}
+tr.highlight>td{
+	color: white;
+}
+tr.highlight button {
+	background-color: white;
+	color: #EE6A50;
+	border-color: #EE6A50;
+}
+th.branchName{
+	
+}
+</style>
+{% endblock %}
+
+
+<!--  -->
+{% block body %}
+<h1 class="page-header">表格详情<small>&nbsp;&nbsp;&nbsp;{{sheet.sheetName}}</small></h1>
+<table class="table table-bordered">
+	<tr>
+		{% for head in heads %}
+			<th class="{{'branchName' if head.head=='单位名称' else ''}}">{{head.head}}</th>
+		{% endfor %}
+		<th class="operator">操作</th>
+	</tr>
+	
+	{% for data in datas %}
+		<tr id="{{data[data|length()-1]}}">
+			{% for i in range(data|length()-1) %}
+				<td>{{data[i]}}</td>
+			{% endfor %}
+			<td>
+				<a name="data[data|length()-1]" href="{{url_for('user_write',sheetNo=sheet.sheetNo,branchNo=data[data|length()-1])}}">
+					<button class="btn btn-success change">填报|更改</button>
+				</a>
+			</td>
+		</tr>
+	{% endfor %}
+	
+</table>
+{% endblock %}
+
+
+{% block footer %}
+<script type="text/javascript">
+function highlight(theId){
+	//高亮成员
+	var theTr=document.getElementById(theId);
+	if(theTr!=null)
+		theTr.setAttribute("class","highlight");
+	{% set id=highlightNo|int()%}
+	window.location.hash="#{{id-2 if id>8 or id>179 else ''}}";
+}
+
+highlight("{{highlightNo}}");
+</script>
+{% endblock %}

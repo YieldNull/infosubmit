@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- icon-->
+<link rel="shortcut icon" href="img/icon.ico" type="image/x-icon">
+
+<!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
+<link
+	href="{{ url_for('static',filename='css/bootstrap.min.css') }}"
+	rel="stylesheet">
+
+<!-- Custom CSS -->
+<link rel="stylesheet"
+	href="{{ url_for('static',filename='css/main.css') }}">
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<style type="text/css">
+body{
+	font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+</style>
+{% block head%}
+<title>{% block title %}{% endblock%}</title> {% endblock%}
+</head>
+
+<body>
+	{% block topnav %} 
+	{% endblock %}
+	
+	{% block modal %}
+	{% endblock %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-2 sidebar">
+				{% block sidebar %} 
+				{%endblock %}
+			</div>
+			<!--/.end sidenavbar-->
+
+			<!-- right main content-->
+			<div class="col-md-9  main">
+				{% for category, message in get_flashed_messages(with_categories=true) %}
+					<div class="alert alert-{{ category }} alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert"
+							aria-hidden="true">&times;</button>
+						<p>{{ message }}</p>
+					</div>
+				{% endfor %}
+				{% block body %}
+				{%endblock %}
+			</div>
+
+			<!-- /.end right main content-->
+		</div>
+		<!--  .end row-->
+	</div>
+
+	{% block footer %} 
+	{% endblock %}
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="{{ url_for('static',filename='js/jquery.js') }}"></script>
+
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script type="text/javascript"
+		src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+			<!-- Include all compiled plugins (below), or include individual files as needed -->
+</body>
+</html>

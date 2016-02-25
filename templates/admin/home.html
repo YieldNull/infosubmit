@@ -1,0 +1,33 @@
+{% extends "admin/base.html" %}
+
+
+<!--  -->
+{% block title %}管理员主页{% endblock %}
+
+
+<!--  -->
+{% block body %}
+<div class="history-announce">
+	<a href="{{url_for('admin_announce',page=1)}}"><button type="button"
+			class="btn btn-danger ">历史公告</button></a>
+</div>
+<div class="history-announce new-announce">
+	<a href="{{url_for('admin_new')}}"><button type="button"
+			class="btn btn-danger">发布公告</button></a>
+</div>
+<h1 class="page-header">管理员公告</h1>
+	{% for announce in announces %} 
+		<div class="bs-callout bs-callout-info">
+			<h3>{{announce.title}}</h3>
+			<h5>
+				<i>{{announce.releaseTime.strftime('%Y年 %m月 %d日')}}</i> <a href="{{url_for('admin_edit',announceNo=announce.announceNo)}}" class="delete-announce">{{ '编辑公告及表格' if announce.sheetNo else '编辑公告'}}</a>
+			</h5>
+		
+			<div class="announce">{{announce.content}}</div>
+			{% if announce.sheetNo %}
+				<a href="{{url_for('admin_sheet',sheetNo=announce.sheetNo.sheetNo)}}"><button type="button" class="btn btn-info">查看表格提交情况</button></a>
+			{% endif %}
+		</div>
+	{% endfor %}
+{% endblock %}
+

@@ -1,0 +1,49 @@
+{#
+bottom pagination
+@param:
+	thePage: current page to show
+	itemInPage: items in a single page
+	maxItems: max number of all item 
+	query_router: the router to change page
+#}
+
+<div class="bottom-nav">
+	<nav class="nav-pagination">
+		<ul class="pagination">
+		 	{# calculate the begin page #}
+			{% set beginPage=(((thePage-1)/itemInPage)|int())*itemInPage+1 %}
+			
+			{# judge whether the previous button usable or disabled #}
+			{% if beginPage==1%}
+				<li class='disabled'> <span aria-hidden="true">&laquo;</span></li>
+			{% else %}
+				<li><a href="{{url_for(query_router,page=beginPage-1)}}" aria-label="Previous"> <span aria-hidden="true">&laquo;</span></a></li>
+			{% endif %}
+			
+			
+			{# calculate the end page 
+			   not simply beginPage+itemInPage when it is at the very end
+			#}
+			{% set finalPage= (maxItems/itemInPage)|int if maxItems%itemInPage==0 else (maxItems/itemInPage)|int+1 %}
+			{% set endPage= finalPage+1 if maxItems <= (beginPage+itemInPage-1)*itemInPage else beginPage+itemInPage %}
+			
+			{#
+				generate <li> in loop
+			#}
+			{% for i in range(beginPage,endPage)%}
+				{% if i==thePage %}
+					<li class="active"><a href="{{url_for(query_router,page=i)}}">{{i}}</a></li>
+				{% else %}
+					<li><a href="{{url_for(query_router,page=i)}}">{{i}}</a></li>
+				{% endif %}
+			{% endfor %}
+			
+			{# judge whether the Next button usable or disabled #}
+			{% if (maxItems/itemInPage)|int <= beginPage+itemInPage-2 %}
+				<li class="disabled"><span aria-hidden="true">&raquo;</span></li>
+			{% else %}
+				<li><a href="{{url_for(query_router,page=endPage)}}" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>
+			{% endif %}
+		</ul>
+	</nav>
+</div>

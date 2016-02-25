@@ -1,0 +1,160 @@
+/*
+ * Base structure
+ */
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+	background-color: white;
+	padding-top: 50px;
+	font-family: "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+/*
+ * Global add-ons
+ */
+.sub-header {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #eee;
+}
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+	border: 0;
+}
+
+.navbar {
+	background: #2d3e50;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+	color: white;
+}
+
+.navbar-inverse .navbar-brand {
+	color: white;
+}
+/*
+ * Sidebar
+ */
+/* Hide for mobile, show later */
+.sidebar {
+	display: none;
+}
+
+@media ( min-width : 768px) {
+	.sidebar {
+		position: fixed;
+		top: 31px;
+		bottom: 0;
+		left: 0;
+		z-index: 1000;
+		display: block;
+		padding: 20px;
+		overflow-x: hidden;
+		overflow-y: auto;
+		/* Scrollable contents if viewport is shorter than content. */
+		background-color: #f5f5f5;
+		border-right: 1px solid #eee;
+	}
+}
+/* Sidebar navigation */
+.nav-sidebar {
+	margin-right: -21px;
+	/* 20px padding + 1px border */
+	margin-bottom: 20px;
+	margin-left: -20px;
+}
+
+.nav-sidebar>li>a {
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
+.nav-sidebar>.active>a, .nav-sidebar>.active>a:hover, .nav-sidebar>.active>a:focus
+	{
+	color: #fff;
+	background-color: #428bca;
+}
+/*
+ * Main content
+ */
+.main {
+	padding: 20px;
+	margin-left: 20%;
+}
+
+.main .page-header {
+	margin-top: 0;
+}
+@media ( max-width : 991px) {
+	.main {
+		margin-left: 30%;
+	}
+}
+
+@media ( max-width : 768px) {
+	.main {
+		margin-left: 0%;
+	}
+}
+
+.page-header {
+	color: #428bca;
+}
+/**
+			 * left navbar 
+			 */
+#navbar {
+	margin-right: 40px;
+}
+
+.bs-callout {
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 2px;
+	margin: 20px 0px;
+	border: 1px solid #eee;
+	border-left-width: 5px;
+	border-radius: 3px;
+	border-left-color: #F06B37;
+}
+
+h3 {
+	color: #1b809e;
+}
+
+h5 {
+	color: #959595;
+}
+
+.btn {
+	margin-bottom: 10px;
+}
+
+.announce {
+	display: block;
+	padding: 9.5px;
+	margin: 0 0 20px 0px;
+	font-size: 16px;
+	background-color: #f5f5f5;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.history-announce {
+	float: right;
+}
+
+.new-announce {
+	margin-right: 10px;
+}
+
+a.delete-announce {
+	color: red;
+	margin-left: 10px;
+}
+
+.nav-sidebar>li>a:hover {
+	background-color: #F06B37;
+	color: white;
+}

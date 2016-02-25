@@ -1,0 +1,115 @@
+{% extends "user/base.html" %}
+
+
+<!--  -->
+{% block title %}填写表格{% endblock %}
+
+
+<!--  -->
+{% block head %} {{super()}}
+<style type="text/css">
+.form-group>label {
+	font-weight: 200;
+	font-size: 16px;
+}
+
+.submit-state {
+	font-size: 14px;
+	font-family: "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+	padding: 5px 10px 5px 10px;
+}
+
+code {
+	background-color: #F06B37;
+	color: white;
+}
+
+h2.lead {
+	color: red;
+	font-family: "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+
+.modal-footer button.btn-default {
+	margin-bottom: 0px;
+}
+
+.modal-body input.form-control {
+	width: 80%;
+}
+
+button.btn-success {
+	margin-right: 20px;
+}
+
+.write-input {
+	margin-right: 30px;
+}
+
+label.write-label {
+	margin-right: 10px;
+}
+
+.table-branch {
+	margin-bottom: 20px;
+}
+</style>
+{% endblock %}
+
+<!--  -->
+{% block body %}
+<div class="table-head">
+	<h2 class="page-header">
+		{%if sheet.closed%}
+			<code class="submit-state">已截止</code>
+		{%else%}
+			<code class="submit-state">未截止</code>
+		{%endif%}
+		&nbsp;{{sheet.sheetName}}
+	</h2>
+</div>
+<div class="data">
+	{%if sheet.closed%}
+		<h2>抱歉，管理员已终止表格的填报</h2>
+		<h2><a href="{{url_for('user_sheet',sheetNo=sheet.sheetNo)}}">点击此处</a>&nbsp;查看表格提交情况</h2>
+	{%else%}
+		<form class="form-horizontal" action="{{url_for('user_submit')}}" method="POST">
+			{%for head in heads%}
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{head.head}}</label>
+					<div class="col-sm-10">
+						<input type="text" name="{{head.headNo}}" class="form-control"
+						{%if head.head=='单位名称'%}
+							value="{{branch.branchName}}" readonly
+						{%elif head.head=='单位分类'%}
+							value="{{branch.branchCate}}" readonly
+						{%else%}
+							value="{{datas[loop.index-1]}}"
+						{%endif%}
+						>
+					</div>
+				</div>
+			{%endfor%}
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					{%if datas|length()>0%}
+						<button type="submit" class="btn btn-danger">更改信息</button>
+						<input type="text" name="update" value="True" hidden="hidden">
+					{%else%}
+						<button type="submit" class="btn btn-danger">提交信息</button>
+					{%endif%}
+					<input type="text" name="sheetNo" value="{{sheet.sheetNo}}" hidden="hidden">
+				</div>
+			</div>
+		</form>
+	{%endif%}
+</div>
+{% endblock %}
+
+
+<!--  -->
+{% block modal %} {% endblock %}
+<!--  -->
+{% block footer %}
+	
+</script>
+{% endblock %}

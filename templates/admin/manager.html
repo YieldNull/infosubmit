@@ -1,0 +1,169 @@
+{% extends "admin/base.html" %}
+<!--  -->
+
+{% block title %}成员管理{% endblock %}
+
+<!--  -->
+{% block head %} {{ super() }}
+<link href="{{url_for('static',filename='css/admin-manager.css')}}" rel="stylesheet">
+{% endblock %}
+
+<!--  -->
+{% block body %}
+<div class="history-announce">
+	<button type="button" class="btn btn-danger" data-toggle="modal"
+		data-target="#myModal">添加成员</button>
+</div>
+<h1 class="page-header">成员管理</h1>
+<table class="table table-bordered">
+	<tr class="warning">
+		<th class="name">单位名称</th>
+		<th class="branch">所属分类</th>
+		<th class="operator">操作</th>
+	</tr>
+	{% for branch in object_lists %} 
+		{% if loop.index%2==0 %}
+			<tr class="warning" id="{{branch.branchNo}}">
+		{% else %}
+			<tr id="{{branch.branchNo}}">
+		{% endif %}
+			<td>{{branch.branchName}}</td>
+			<td>{{branch.branchCate}}</td>
+			<td><button class="btn btn-success change" onclick="changeInfo('{{branch.branchNo}}')">更改信息</button></td>
+		</tr>
+	{% endfor %}
+</table>
+
+{% include 'pagination.html' %}
+
+<form action='/admin/branch-update/' method='post' id='changeForm'>
+	<input type='text' name='branchNo' id='branchNo' hidden="hidden">
+	<input type='text' name='branchName' id='change-branchname' hidden="hidden"> 
+	<input type='text' name='branchCate' id='change-category' hidden="hidden">
+</form>
+{% endblock %}
+
+
+<!--  -->
+{% block modal %}
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">添加成员</h4>
+			</div>
+			<div class="modal-body">
+				<form id="newForm" class="form-horizontal" action="{{url_for('admin_branch_new')}}" method="POST">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">单位名称</label>
+						<div class="col-sm-9">
+							<input id="new-branchname" name="branchName" type="text" class="form-control" placeholder="请输入新增单位名称"
+								value="">
+						</div>
+						<div id="branchname-hint"></div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">单位分类</label>
+						<div class="col-sm-9">
+							<input id="new-category" name="branchCate" type="text" class="form-control" value=""
+								placeholder="请输入新增单位分类">
+						</div>
+						<div id="category-hint"></div>
+					</div>
+					<div class="form-group">
+						<div class="radio col-sm-9 col-sm-offset-3">
+	  						<label>
+	   						 <input type="radio" name="superCate" value="事业单位" checked>事业单位
+	  						</label>
+	  						<label>
+	   						 <input type="radio" name="superCate" value="行政单位">行政单位
+	  						</label>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="newInfo()">提交设置</button>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+<!--  -->
+{% block footer %}
+<script type="text/javascript">
+function changeInfo(rowId) {
+	//利用正则表达式，将td用input框起来
+	var row = document.getElementById(rowId);
+	var regExp = /<td>.*?<\/td>/g;
+	var html = row.innerHTML;
+
+	var tds = new Array();
+
+	var result = Object;
+	while ((result = regExp.exec(html)) != null) {
+		tds.push(result[0]);
+	}
+
+	var replaceHtml = "";
+	for (var i = 0; i < tds.length - 1; i++) {
+		/<td>(.*?)<\/td>/.exec(tds[i]);
+		// replaceHtml+="<td><input name='"+i+"' type='text'
+		// value='"+RegExp.$1+"'> </input> </td>"
+		var rows = 1;
+		if (i == 0)
+			rows = parseInt(RegExp.$1.length / 30) + 1;
+
+		replaceHtml += "<td><textarea class='form-control' rows='" + rows
+				+ "' id='" + rowId + i + "'>" + RegExp.$1 + "</textarea> </td>"
+	}
+
+	replaceHtml += "<td><button class='btn btn-danger change' onclick=\"submitChange('"
+			+ rowId + "')\">确认更改</button></td>"
+	row.innerHTML = replaceHtml;
+
+	// alert(row.innerHTML)
+}
+
+function submitChange(rowId) {
+	//更改信息，提交表单
+	document.getElementById('branchNo').value = rowId;
+	document.getElementById('change-branchname').value = document
+			.getElementById(rowId + '0').value.replace(/\s+/g, '')
+	document.getElementById('change-category').value = document
+			.getElementById(rowId + '1').value.replace(/\s+/g, '')
+
+	var form = document.getElementById('changeForm');
+	form.action = form.action + rowId
+	form.submit();
+}
+
+function newInfo() {
+	//增加新成员
+	var name=document.getElementById('new-branchname');
+	name.value=name.value.replace(/\s+/g, '');
+	
+	var cate=document.getElementById('new-category');
+	name.value=name.value.replace(/\s+/g, '');
+
+	document.getElementById('newForm').submit();
+}
+
+function highlight(theId){
+	//高亮成员
+	var theTr=document.getElementById(theId);
+	if(theTr!=null)
+		theTr.setAttribute("class","highlight");
+}
+
+highlight("{{highlightNo}}");
+</script>
+{% endblock %}

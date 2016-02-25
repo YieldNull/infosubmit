@@ -1,0 +1,27 @@
+{% extends "admin/base.html" %}
+
+{% block title %}填写表格{% endblock %}
+{% block body %}
+	<h1 class="page-header">初始化</h1>
+	<div id="init">
+		<h3>将会删除所有已提交数据<br>
+			包括发布的公告、表格,以及对成员、账号作出的所有更改<br><br>
+			您确认要初始化吗？
+		</h3>
+		<hr>
+		<a href="{{url_for('admin_home')}}">
+			<button type="button" class="btn btn-info">回到主页</button>
+		</a>
+		<button type="button" class="btn btn-danger" onclick="init()">初始化</button>
+	</div>
+{%endblock%}
+
+{%block footer%}
+<script type="text/javascript">
+	function init(){
+		div=document.getElementById("init");
+		div.innerHTML="<h3>正在初始化，请勿关闭当前页面</h3>"
+		window.location.href="{{url_for('admin_init',init='49a99329766fdd5002309c6a225b32472c47bc3e')}}"
+	}
+</script>
+{%endblock%}

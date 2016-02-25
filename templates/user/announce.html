@@ -1,0 +1,73 @@
+{% extends "user/base.html" %}
+
+
+<!--  -->
+{% block title %}历史公告{% endblock %}
+
+
+<!--  -->
+{% block head %} {{super()}}
+<style type="text/css">
+.announce {
+	margin-top: 20px;
+}
+
+.title {
+	font-size: 18px;
+	color: #666666;
+}
+.data-head {
+	margin-bottom: 6px;
+}
+</style>
+{% endblock %}
+
+<!--  -->
+{% block body %}
+<h1 class="page-header">所有公告</h1>
+<table class="table table-bordered table-hover">
+	{% for announce in object_lists %} 
+		{% if loop.index%2==0 %}
+			<tr class="warning">
+		{% else %}
+			<tr>
+		{% endif %}
+		<td>
+			<div class="data-head">
+				<span class="title">
+					{{announce.releaseTime.strftime('%Y年 %m月 %d日')}}&nbsp;&nbsp;&nbsp;
+					<a href="javascript:accordion('{{announce.announceNo}}')">
+						<font class="announce-title">{{announce.title}}</font>
+					</a>
+				</span>&nbsp;&nbsp;
+			</div>
+
+			<div id="{{announce.announceNo}}" class="bs-callout bs-callout-info" hidden="hidden">
+				<div class="announce">{{announce.title}}</div>
+					{% if announce.sheetNo %}
+						<a href="{{url_for('user_sheet',sheetNo=announce.sheetNo.sheetNo)}}">
+							<button type="button" class="btn btn-info">点击查看表格</button>
+						</a>
+					{% endif %}
+			</div>
+		</td>
+	</tr>
+	{%endfor%}
+</table>
+{% include 'pagination.html' %} 
+<!--  -->
+{% endblock %}
+
+<!--  -->
+{% block footer %}
+<script type="text/javascript">
+	function accordion(theId) {
+		var obj = document.getElementById(theId);
+		if (obj.hasAttribute("hidden"))
+			obj.removeAttribute("hidden");
+		else
+			obj.setAttribute("hidden", "hidden");
+	}
+</script>
+{% endblock %}
+

@@ -1,0 +1,130 @@
+{% extends "admin/base.html" %}
+<!--  -->
+
+{% block title %}发布公告{% endblock %}
+
+<!--  -->
+{% block head %} {{ super() }}
+
+<link href="{{url_for('static',filename='css/admin-new.css')}}"
+	rel="stylesheet">
+{% endblock %}
+
+<!--  -->
+{% block body %}
+
+<h1 class="page-header">发布公告</h1>
+
+<form id="theForm" class="form-horizontal" action="{{url_for('admin_announce_new')}}"
+	method="POST">
+	<input id="announceTitle" name="announceTitle" type="text"
+		class="form-control" placeholder="输入公告标题">
+	<textarea id="announceContent" name="announceContent"
+		class="form-control announce-area" placeholder="输入公告内容  最多1000个字"
+		rows="4"></textarea>
+	<div class="checkbox">
+		<label class="select-table"> 
+			<input type="checkbox" id="select-table" name="releaseSheet" onclick="checkClicked()" value="yes"> 同时发布表格
+		</label>
+	</div>
+	<div class="table-detail" id="table" hidden="hidden">
+		<div class="form-group">
+			<label class="col-sm-2 col-xs-2 control-label">表格名</label>
+			<div class="col-sm-10 col-xs-10">
+				<input type="text" placeholder='请填写表格名称' name="sheetName"
+					id="sheetName" class="form-control">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 col-xs-2 control-label">填表单位类别</label>
+			<div class="col-sm-10 col-xs-10">
+				<select name="superCate" class="form-control">
+					<option>事业单位</option>
+					<option>行政单位</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 col-xs-2 control-label">表头1</label>
+			<div class="col-sm-10 col-xs-10">
+				<input type="text" name="1" id="1"
+					class="form-control" value="单位名称" readonly>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 col-xs-2 control-label">表头2</label>
+			<div class="col-sm-10 col-xs-10">
+				<input type="text" name="2" id="2"
+					class="form-control" value="单位分类" readonly>
+			</div>
+		</div>
+		<script type="text/javascript">
+			for (var index = 3; index < 11; index++) {
+				document
+						.write("<div class='form-group'>"
+								+ "<label class='col-sm-2 col-xs-2 control-label'>表头"
+								+ index
+								+ "</label><div class='col-sm-10 col-xs-10'>"
+								+ "<input type='text' placeholder='为避免用户混淆，表头不能重复' id='" + index
+						+ "' name='" + index
+						+ "'class='form-control'>"
+								+ "</div></div>");
+			}
+		</script>
+
+
+		<div id="more-thead"></div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-rsm-10">
+			<input type="submit" class="btn btn-danger" value="发布公告">
+			<div id="add-thead" hidden="hidden">
+				<button type="button" class="btn btn-success" id="add-thead"
+					onclick="addThead()">添加表头</button>
+			</div>
+		</div>
+	</div>
+</form>
+
+{% endblock %}
+<!--  -->
+{% block footer %}
+
+<script type='text/javascript'>
+	var index = 11;
+	
+	init();
+	function init(){
+		var obj=document.getElementById("select-table");
+		if(obj.checked)
+			obj.checked=false;
+	}
+	function checkClicked() {
+		var div = document.getElementById("table");
+		var thead = document.getElementById("add-thead");
+
+		if (div.hasAttribute("hidden"))
+			div.removeAttribute("hidden");
+		else
+			div.setAttribute("hidden", "hidden");
+
+		if (thead.hasAttribute("hidden"))
+			thead.removeAttribute("hidden");
+		else
+			thead.setAttribute("hidden", "hidden");
+	}
+
+	function addThead() {
+		var more = document.getElementById("more-thead");
+		var addHtml = "<div class='form-group'>"
+				+ "<label class='col-sm-2 col-xs-2 control-label'>表头" + index++
+				+ "</label>" + "<div class='col-sm-10 col-xs-10'>"
+				+ "<input placeholder='请按顺序填写表头' type='text' id='"
+				+ (index - 1) + "' name='" + (index - 1)
+				+ "' class='form-control'>" + "</div></div>";
+		more.innerHTML = addHtml + "<div id='more-thead'></div>";
+		more.removeAttribute('id');
+	}
+</script>
+{% endblock %}

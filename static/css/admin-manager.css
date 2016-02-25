@@ -1,0 +1,76 @@
+table.table {
+	width: 100%;
+	color: #666666;
+	table-layout: fixed;
+}
+
+th.name {
+	width: 50%;
+}
+
+th.branch {
+	width: 30%;
+}
+
+th.operator {
+	width: 20%;
+}
+
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td,
+	.table>tbody>tr>td, .table>tfoot>tr>td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.table>tbody>tr>td {
+	padding: 1px;
+}
+
+button.change {
+	font-size: 12px;
+	padding: 2px;
+	margin-left: -4px;
+	margin-bottom: 8px;
+	margin-top: 8px;
+}
+
+textarea.form-control {
+	width: 100%;
+	resize: none;
+	text-align: center;
+	overflow-x: visible;
+	overflow-y: visible;
+	vertical-align: middle;
+	/*height: 36px;*/
+}
+
+.form-control {
+	padding: 6px 5px;
+}
+
+.pagination {
+	margin: 0 0;
+}
+
+.bottom-nav {
+	text-align: center;
+}
+
+.modal-footer button.btn-default {
+	margin-bottom: 0px;
+}
+
+.modal-body input.form-control {
+	width: 80%;
+}
+
+tr.highlight {
+	background-color: #EE6A50;
+	color: white;
+}
+
+tr.highlight button {
+	background-color: white;
+	color: #EE6A50;
+	border-color: #EE6A50;
+}

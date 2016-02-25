@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+<!--  -->
+{% block title %}所有表格{% endblock %}
+
+<!--  -->
+{% block head %} {{ super() }}
+<style type="text/css">
+.data {
+	background-color: white;
+	margin-top: -10px;
+}
+
+.announce {
+	margin-top: 20px;
+}
+
+h4{
+	margin-bottom: 2px;
+	margin-top:2px;
+}
+td.table-time{
+	color:#666666;
+}
+</style>
+{% endblock %}
+
+
+<!--  -->
+{% block body %}
+<h1 class="page-header">所有表格</h1>
+<table class="table table-bordered">
+	{% for sheet in object_lists %} 
+		{% if loop.index%2==0 %}
+			<tr class="warning">
+		{% else %}
+			<tr>
+		{% endif %}
+		<td>
+			<div class="data-head">
+				<h4>
+					&nbsp;&nbsp;<a href="{{url_for('admin_sheet',sheetNo=sheet.sheetNo)}}">{{sheet.sheetName}}</a>
+				</h4>
+			</div>
+		</td>
+		<td class="table-time">
+			<h4>{{sheet.releaseTime.strftime('%Y年 %m月 %d日')}}</h4>
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+{% include 'pagination.html' %} 
+<!--  -->
+{% endblock %} 
+
